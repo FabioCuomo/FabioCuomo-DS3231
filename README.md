@@ -5,6 +5,7 @@ This is a fork of the Adafruit library https://github.com/adafruit/RTClib, which
 I added commands for reading temperature and for using DS3231 alarms, that I needed for implementing wake-up of arduino on interrupt after entering the sleep state.
 
 Update 06-Jan-2017
+
 Added functions for reading and writing bytes on DS3231 memory control registers: 
 - byte read(byte addr);
 - void write(byte addr, byte value);
