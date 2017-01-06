@@ -1,5 +1,4 @@
 // Code by JeeLabs http://news.jeelabs.org/code/
-// Extended by Fabio Cuomo https://github.com/FabioCuomo/FabioCuomo-DS3231/
 // Released to the public domain! Enjoy!
 
 #ifndef _RTCLIB_H_
@@ -151,6 +150,8 @@ public:
     void alarmInterrupt(byte alarmNumber, bool alarmEnabled);
     bool isArmed(byte alarmNumber);
     void clearAlarm(byte alarmNumber);
+    void write(byte addr, byte value);
+    byte read(byte addr);
 };
 
 // RTC based on the PCF8523 chip connected via I2C and the Wire library

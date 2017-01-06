@@ -1,5 +1,4 @@
 // Code by JeeLabs http://news.jeelabs.org/code/
-// Extended by Fabio Cuomo https://github.com/FabioCuomo/FabioCuomo-DS3231/
 // Released to the public domain! Enjoy!
 
 #include <Wire.h>
@@ -688,3 +687,32 @@ bool RTC_DS3231::isArmed(byte alarmNumber) {
     return value;
 }
 
+/*----------------------------------------------------------------------*
+ * This method writes a single byte in RTC memory                       *
+ * Valid address range is 0x00 - 0x12, no checking.                     *
+ *----------------------------------------------------------------------*/
+void RTC_DS3231::write(byte addr, byte value) {
+
+    Wire.beginTransmission(DS3231_ADDRESS);
+    Wire.write(addr);
+    Wire.write(value);
+    Wire.endTransmission();
+}
+
+/*----------------------------------------------------------------------*
+ * This method reads a single byte from RTC memory                      *
+ * Valid address range is 0x00 - 0x12, no checking.                     *
+ *----------------------------------------------------------------------*/
+byte RTC_DS3231::read(byte addr) {
+    uint8_t value;
+
+    Wire.beginTransmission(DS3231_ADDRESS);
+    Wire.write(addr);
+    Wire.endTransmission();
+
+    Wire.requestFrom((uint8_t)DS3231_ADDRESS, (uint8_t)1);
+    value = Wire._I2C_READ();
+    Wire.endTransmission();
+
+    return value;
+}
