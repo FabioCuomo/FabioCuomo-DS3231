@@ -9,3 +9,14 @@ Update 06-Jan-2017
 Added functions for reading and writing bytes on DS3231 memory control registers: 
 - byte read(byte addr);
 - void write(byte addr, byte value);
+
+Update 09-Jan-2017
+
+1) DS3231 temperature registers are updated after every 64-second.
+   Added function forceConversion() for forcing temperature reading.
+
+2) Corrected bug in function for temperature reading.
+   I found in internet a lot of wrong implementations.
+   I made several tests in controlled environments and I can now ensure that current implementation returns correct values
+   for both positive and negative temperatures.
+
