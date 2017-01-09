@@ -144,6 +144,7 @@ public:
     static Ds3231SqwPinMode readSqwPinMode();
     static void writeSqwPinMode(Ds3231SqwPinMode mode);
     float getTemp();
+    void forceConversion(void);
     void setAlarm(Ds3231_ALARM_TYPES_t alarmType, byte seconds, byte minutes, byte hours, byte daydate);
     void setAlarm(Ds3231_ALARM_TYPES_t alarmType, byte minutes, byte hours, byte daydate);
     void armAlarm(byte alarmNumber, bool armed);

@@ -39,6 +39,7 @@ alarmInterrupt	KEYWORD2
 isArmed	KEYWORD2
 armAlarm	KEYWORD2
 clearAlarm	KEYWORD2
+forceConversion	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

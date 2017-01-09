@@ -498,6 +498,8 @@ void RTC_DS3231::writeSqwPinMode(Ds3231SqwPinMode mode) {
   //Serial.println( read_i2c_register(DS3231_ADDRESS, DS3231_CONTROL), HEX);
 }
 
+/*----------------------------------------------------------------------*/
+
 float RTC_DS3231::getTemp() {
   int8_t temp_msb, temp_lsb;
 
@@ -507,10 +509,17 @@ float RTC_DS3231::getTemp() {
 
   Wire.requestFrom((uint8_t)DS3231_ADDRESS, (uint8_t)2);
   temp_msb = Wire._I2C_READ();
-  temp_lsb = Wire._I2C_READ() >> 6;
+  temp_lsb = (Wire._I2C_READ() >> 6) & 0x03;
   Wire.endTransmission();
 
-  return (float)(temp_msb & B01111111) + ((float)temp_lsb * 0.25);
+  if(temp_msb & 0b10000000) {     //check if negative number
+    temp_msb  ^= 0b11111111;
+    temp_msb  += 0x1;
+    return (-1.0 * ((float)temp_msb) + ((float)temp_lsb * 0.25));
+  }
+  else {
+    return ((float)temp_msb + ((float)temp_lsb * 0.25));
+  }
 }
 
 /*----------------------------------------------------------------------*
@@ -716,3 +725,38 @@ byte RTC_DS3231::read(byte addr) {
 
     return value;
 }
+
+/*----------------------------------------------------------------------*
+ * The temperature registers are updated after every 64-second          *
+ * conversion. If you want force temperature conversion call this       *
+ * function.                                                            *
+ *----------------------------------------------------------------------*/
+void RTC_DS3231::forceConversion(void) {
+    uint8_t value;
+
+    Wire.beginTransmission(DS3231_ADDRESS);
+    Wire.write(DS3231_CONTROL);
+    Wire.endTransmission();
+
+    Wire.requestFrom((uint8_t)DS3231_ADDRESS, (uint8_t)1);
+    value = Wire._I2C_READ();
+    Wire.endTransmission();
+
+    value |= 0b00100000;
+
+    Wire.beginTransmission(DS3231_ADDRESS);
+    Wire.write(DS3231_CONTROL);
+    Wire.write(value);
+    Wire.endTransmission();
+
+    do {
+      Wire.beginTransmission(DS3231_ADDRESS);
+      Wire.write(DS3231_CONTROL);
+      Wire.endTransmission();
+
+      Wire.requestFrom((uint8_t)DS3231_ADDRESS, (uint8_t)1);
+      value = Wire._I2C_READ();
+      Wire.endTransmission();
+    } while ((value & 0b00100000) != 0);
+} 
+ 
