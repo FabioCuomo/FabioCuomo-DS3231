@@ -6,13 +6,13 @@ I added commands for reading temperature and for using DS3231 alarms, that I nee
 
 Update 06-Jan-2017
 
-Added functions for reading and writing bytes on DS3231 memory control registers: 
+Added functions for reading and writing bytes on DS3231 memory control registers:
 - byte read(byte addr);
 - void write(byte addr, byte value);
 
 Update 09-Jan-2017
 
-1) DS3231 temperature registers are updated after every 64-second.
+1) DS3231 temperature registers are updated after every 64 seconds.
    Added function forceConversion() for forcing temperature reading.
 
 2) Corrected bug in function for temperature reading.
